@@ -97,32 +97,44 @@ def showResultOnImage( result, img ):
     plt.draw()
     plt.show()
 
-pathToFileInDisk = r'/home/thebhatman/Downloads/69107836_1116226275432174_5239825646892351488_n.jpg'
-with open(pathToFileInDisk, 'rb') as f:
-    data = f.read()
+def text_from_image():
 
-params = {'mode' : 'Handwritten'}
+    pathToFileInDisk = r'/home/thebhatman/Downloads/69504119_717887321958526_1499107147248566272_n.jpg'
+    with open(pathToFileInDisk, 'rb') as f:
+        data = f.read()
 
-headers = dict()
-headers['Ocp-Apim-Subscription-Key'] = _key
-headers['Content-Type'] = 'application/octet-stream'
+    params = {'mode' : 'Handwritten'}
 
-json = None
-
-operationLocation = processRequest(json, data, headers, params)
-
-result = None
-if (operationLocation != None):
-    headers = {}
+    headers = dict()
     headers['Ocp-Apim-Subscription-Key'] = _key
-    while True:
-        time.sleep(1)
-        result = getOCRTextResult(operationLocation, headers)
-        if result['status'] == 'Succeeded' or result['status'] == 'Failed':
-            break
+    headers['Content-Type'] = 'application/octet-stream'
 
-if result is not None and result['status'] == 'Succeeded':
-    data8uint = np.fromstring(data, np.uint8)
-    img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
-    showResultinFile(result)
-    # showResultOnImage(result, img)
+    json = None
+
+    operationLocation = processRequest(json, data, headers, params)
+
+    result = None
+    if (operationLocation != None):
+        headers = {}
+        headers['Ocp-Apim-Subscription-Key'] = _key
+        while True:
+            time.sleep(1)
+            result = getOCRTextResult(operationLocation, headers)
+            if result['status'] == 'Succeeded' or result['status'] == 'Failed':
+                break
+
+    text_file = []
+    if result is not None and result['status'] == 'Succeeded':
+        data8uint = np.fromstring(data, np.uint8)
+        img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+        showResultinFile(result)
+        # showResultOnImage(result, img)
+        all_text = result['recognitionResult']['lines']
+        for i in range(len(all_text)):
+            one_line = all_text[i]['words']
+            each_line_as_string = ""
+            for word in one_line:
+                each_line_as_string += word['text'] + " "
+            text_file.append(each_line_as_string)
+    return text_file
+
