@@ -97,12 +97,12 @@ def showResultOnImage( result, img ):
     plt.draw()
     plt.show()
 
-def text_from_image():
+def text_from_image(img):
 
-    pathToFileInDisk = r'/home/thebhatman/Downloads/69504119_717887321958526_1499107147248566272_n.jpg'
-    with open(pathToFileInDisk, 'rb') as f:
-        data = f.read()
-
+    # pathToFileInDisk = r'/home/thebhatman/Downloads/69107836_1116226275432174_5239825646892351488_n.jpg'
+    # with open(pathToFileInDisk, 'rb') as f:
+    #     data = f.read()
+    data = img.read()
     params = {'mode' : 'Handwritten'}
 
     headers = dict()
