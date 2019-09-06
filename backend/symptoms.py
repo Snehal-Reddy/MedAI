@@ -61,10 +61,21 @@ def pred_dis(symptomlist,buckets):
 				continue
 			if(calculate_apriori_confidence(disease_bucket[illness[0]],symp,buckets) > prev_confidence):
 				symptom = symp
+		# if(symptom not in symps.keys()):
+		symptom_new.append(symptom)
+
+	out = react_inp(symptom_new)
+	# out = "YYY"
+	i = 0
+	# symps = {}
+	for illness in top_3:
+
+		symptomlist_new = symptomlist.copy()
 		if(symptom not in symps.keys()):
-			print("Do you have "+symptom+" ? Y or N")
-			# break
-			x = input()
+			symptom_new.append(symptom)
+
+			x = out[i]
+			i+=1
 			if(x == 'Y'):
 				symptomlist_new.append(symptom)
 				symps[symptom] = 1
