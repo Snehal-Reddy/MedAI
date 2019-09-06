@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D 
 
 _url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/RecognizeText'
-_key = "b4f1b6fcb14e447e82dc2aad77d25f76"
+_key = "ca1f6160084846acbcab166cd2719365"
   #Here you have to paste your primary key
 _maxNumRetries = 10
 

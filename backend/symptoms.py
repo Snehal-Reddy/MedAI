@@ -84,6 +84,7 @@ def pred_dis(symptomlist,buckets):
 		ind = 2
 
 	print("It is most probably "+top_3[ind][0])
+	return top_3[ind][0]
 
 
 """Assuming every bucket uniquely points to a disease"""
@@ -102,12 +103,13 @@ def get_disease_given_bucket(bucket):
 
 	return disease
 
-buckets = []
+def solver(symptomlist):
+	buckets = []
 
-with open("buckets.csv") as csvfile:
-	reader = csv.reader(csvfile)
-	for row in reader:
-		buckets.append(row)
+	with open("buckets.csv") as csvfile:
+		reader = csv.reader(csvfile)
+		for row in reader:
+			buckets.append(row)
 
-symptomlist=["suicidal","hallucinations auditory","irritable mood","agitation"]
-pred_dis(symptomlist,buckets)
+	# symptomlist=["suicidal","hallucinations auditory","irritable mood","agitation"]
+	return pred_dis(symptomlist,buckets)
