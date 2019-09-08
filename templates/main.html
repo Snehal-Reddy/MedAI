@@ -1,7 +1,4 @@
 <!doctype html>
-<pre>
-  {{csv}}
-</pre>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -140,7 +137,7 @@
 					        <p class="card-text">Feeling unwell ? Don't worry, just tell us your symptoms and our AI will find out what's wrong.</p>
 					        <br>
 					        <div class="input-group mb-3">
-							  <input type="text" class="form-control" placeholder="Symptoms" aria-label="Symptoms" aria-describedby="basic-addon2">
+							  <input type="text" class="form-control" id="symptom" placeholder="Symptoms" aria-label="Symptoms" aria-describedby="basic-addon2">
 							  <div class="input-group-append">
 							    <button class="btn btn-outline-secondary" type="button">Add</button>
 							  </div>
@@ -156,13 +153,28 @@
         </div>  
     <br/>
 
-    <div id="cards"></div>
+    <div id="details" class="center text-center">
+      <!-- <h3 class="boxy">Please answer the following questions.</h3> -->
+    </div>
+    <br/>
+
+    <div id="cards">
+      
+<!--       <div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy">
+        <div class="card-body">
+          <h5 class="card-title">Do you have/feel </h5>
+          <p class="card-text">Symptom ?</p>
+          <a href="#" class="btn btn-warning"> YES </a>
+        </div>
+      </div> -->
+
+    </div>
 
 <!----------------------------------------------------------- JS -------------------------------------------------------->
 
     <script>
 
-    	var symps = [];
+    var symps = [];
 
 		$(document).ready(function(){
 			if(!localStorage.getItem("key"))
@@ -173,9 +185,13 @@
 		});
 
 		function appendSymp(){
-		  symps.push($("#symp").val());
-		  $("#symp").val("");
+		  symps.push($("#symptom").val());
+		  $("#symptom").val("");
 		}
+
+    function appendNewSymp(name){
+      symps.push(name);
+    }
 
 		function searchSymp(){
 		  $.ajax({
@@ -189,61 +205,97 @@
 		            success: function(response){
 		              console.log(response);
 		              symps = null;
+                  SymFunc(response);
 		              console.log("DONE!");
 		            },
 		        });
 		}
 
+    $("#disease").click(function(){
+      $.ajax({
+                url: '/find',
+                type: 'post',
+                data: JSON.stringify({
+                  'symptoms' : symps
+                }),
+                dataType: 'text',
+                contentType: "application/json",
+                success: function(response){
+                  console.log(response);
+                  symps = null;
+                 // SymFunc(response);
+                  console.log("found!");
+                },
+            });
+    }
+
 		$("#img_upload").click(function(){
 
 			var fd = new FormData();
 			var files = $('#file')[0].files[0];
-			fd.append('file',files);
+      if(files == undefined ){
+        alert("Please insert an image");
+      }
+      else {
+        fd.append('file',files);
 
-			$.ajax({
-			    url: '/image',
-			    type: 'post',
-			    data: fd,
-			    contentType: false,
-			    processData: false,
-			    dataType: json,
-			    success: function(response){
-			      console.log(response);
-			      RecieveFunc(response);
-			    },
-			});
+        $.ajax({
+            url: '/image',
+            type: 'post',
+            data: fd,
+            contentType: false,
+            processData: false,
+            dataType: json,
+            success: function(response){
+              console.log(response);
+              RecieveFunc(response);
+            },
+        });
+      }
 
 		});
 
-        function RecieveFunc(data){
-            $("#cards").empty();
-            if(data.length===0){
-                $("#cards").append('<div class="card text-center shadow rounded w-75 center"><div class="card-body"><h5 class="card-title">No results found!</h5></div></div>')
-            }
-            else{
-                $("#cards").append('schedule here');
-                };
+    function RecieveFunc(data){
+        $("#cards").empty();
+        $("#details").empty();
+        if(data.length===0){
+            $("#cards").append('<div class="card text-center shadow rounded w-75 center"><div class="card-body"><h5 class="card-title">No results found!</h5></div></div>')
+        }
+        else{
+          $("#details").append('<h3 class="boxy">heres your schedule</h3>');
+          data.forEach(function(drug){
+            var name = drug[0];
+            var duration = drug[3];
+            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
+          });
         };
+    };
 
-        function dateModifier(date){
-            var temp = date.split('/');
-            if(temp.length===3){
-                return temp[2].concat(temp[1], temp[0]);
-            }
-            else{
-                return '';
-            }
-            
+    function SymFunc(data){
+        $("#cards").empty();
+        $("#details").empty();
+        if(data.length===0){
+            $("#cards").append('<div class="card text-center shadow rounded w-75 center"><div class="card-body"><h5 class="card-title">No results found!</h5></div></div>')
+        }
+        else{
+          $("#details").append('<h3 class="boxy">Please answer the following questions.</h3>');
+          data.forEach(function(name){
+            var name = name;
+            $("#cards").append(' <div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Do you have/feel </h5> <p class="card-text">'+name+'?</p> <a href="#" class="btn btn-warning" onclick=appendNewSymp("'+name+'");> YES </a> </div> </div>');
+          })
+          $("#cards").append('<br/><button type="button" id="disease" class="btn btn-warning btn-lg">FIND</button>');
         };
+    };
      
 
-        $('#go-to-top').each(function(){
-            $(this).click(function(){ 
-                $('html,body').animate({ scrollTop: 0 }, 'slow');
-                $('form')[0].reset()
-                    return false; 
-                });
-        });
+    $('#go-to-top').each(function(){
+        $(this).click(function(){ 
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+            $('form')[0].reset()
+                return false; 
+            });
+    });
+
     </script>
 
 

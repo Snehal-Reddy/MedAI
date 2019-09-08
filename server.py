@@ -24,5 +24,12 @@ def search():
 	#return "hellll OOOOOO"
 	return solver(data)
 
+@app.route('/find', methods = ['POST'])
+def search():
+	data = request.get_json()['symptoms']
+	print(data)
+	#return "hellll OOOOOO"
+	return react_out(data)
+
 if __name__ == '__main__':
    app.run(debug = True, port=3000)
