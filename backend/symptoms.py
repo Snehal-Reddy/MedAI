@@ -63,11 +63,13 @@ def pred_dis(symptomlist,buckets):
 				symptom = symp
 		# if(symptom not in symps.keys()):
 		symptom_new.append(symptom)
+	return symptom_new,top_3,symptomlist,disease_bucket
 
-	out = react_inp(symptom_new)
+def react_out(out,top_3,symptomlist,disease_bucket)
+	# out = react_inp(symptom_new)
 	# out = "YYY"
 	i = 0
-	# symps = {}
+	symps = {}
 	for illness in top_3:
 
 		symptomlist_new = symptomlist.copy()
