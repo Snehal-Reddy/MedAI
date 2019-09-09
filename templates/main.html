@@ -9,7 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js" type="text/javascript"></script>
 
@@ -120,13 +119,15 @@
 					      <div class="card-body">
 					        <h5 class="card-title">Decode prescriptions</h5>
 					        <p class="card-text">Can't understand or remeber when to take your mediciens ? Just upload a pic of your prescription and we'll sort everything out for you </p>
-					        <br>
-					        <div class="custom-file">
-							    <input type="file" class="custom-file-input" id="file">
-							    <label class="custom-file-label" for="file" style="text-align: left;">Input Image</label>
-							</div>
-							<br><br>
-							<button class="btn btn-warning" id="img_upload" style="height:50px;width:200px;">Scan Prescription</button>
+					        <div class="container">
+                    <form method="post" action="" enctype="multipart/form-data" id="myform">
+                        <div >
+                            <input type="file" id="file" name="file" />
+                            <br/><br/>
+                            <button type="button" class="btn btn-warning" id="but_upload" style="height:50px;width:200px;">Scan Prescription</button>
+                        </div>
+                    </form>
+                </div>
 					      </div>
 					    </div>
 					  </div>
@@ -139,11 +140,12 @@
 					        <div class="input-group mb-3">
 							  <input type="text" class="form-control" id="symptom" placeholder="Symptoms" aria-label="Symptoms" aria-describedby="basic-addon2">
 							  <div class="input-group-append">
-							    <button class="btn btn-outline-secondary" type="button">Add</button>
+							    <button class="btn btn-outline-secondary" onclick="appendSymp();" type="button">Add</button>
 							  </div>
 							</div>
 					        <br>	
-					        <button href="#" class="btn btn-warning" style="height:50px;width:200px;"> Find Out </button>
+                  <button class="btn btn-warning" style="height:50px;width:200px;" onclick="searchSymp();"> Find Out </button>
+					        <button class="btn btn-warning" style="height:50px;width:200px;" onclick="searchSymp();"> Find Out </button>
 					      </div>
 					    </div>
 					  </div>
@@ -171,68 +173,39 @@
     </div>
 
 <!----------------------------------------------------------- JS -------------------------------------------------------->
-
-    <script>
+ <script>
 
     var symps = [];
-
-		$(document).ready(function(){
-			if(!localStorage.getItem("key"))
-			{
-				introJs().start();
-				localStorage.setItem("key", "keyValue");
-			};
-		});
-
-		function appendSymp(){
-		  symps.push($("#symptom").val());
-		  $("#symptom").val("");
-		}
 
     function appendNewSymp(name){
       symps.push(name);
     }
-
-		function searchSymp(){
-		  $.ajax({
-		            url: '/disease',
-		            type: 'post',
-		            data: JSON.stringify({
-		              'symptoms' : symps
-		            }),
-		            dataType: 'text',
-		            contentType: "application/json",
-		            success: function(response){
-		              console.log(response);
-		              symps = null;
-                  SymFunc(response);
-		              console.log("DONE!");
-		            },
-		        });
-		}
-
-    $("#disease").click(function(){
-      $.ajax({
-                url: '/find',
-                type: 'post',
-                data: JSON.stringify({
-                  'symptoms' : symps
-                }),
-                dataType: 'text',
-                contentType: "application/json",
-                success: function(response){
-                  console.log(response);
-                  symps = null;
-                 // SymFunc(response);
-                  console.log("found!");
-                },
-            });
+    function appendSymp(){
+      symps.push($("#symptom").val());
+      $("#symptom").val("");
     }
+    // function searchSymp(){
+    //   $.ajax({
+    //             url: '/disease',
+    //             type: 'post',
+    //             data: JSON.stringify({
+    //               'symptoms' : symps
+    //             }),
+    //             dataType: 'text',
+    //             contentType: "application/json",
+    //             success: function(response){
+    //               console.log(response);
+    //               symps = null;
+    //               SymFunc(response);
+    //               console.log("DONE!");
+    //             },
+    //         });
+    // }
 
-		$("#img_upload").click(function(){
+    $("#but_upload").click(function(){
 
-			var fd = new FormData();
-			var files = $('#file')[0].files[0];
+      var fd = new FormData();
+      var files = $('#file')[0].files[0];
       if(files == undefined ){
         alert("Please insert an image");
       }
@@ -245,7 +218,6 @@
             data: fd,
             contentType: false,
             processData: false,
-            dataType: json,
             success: function(response){
               console.log(response);
               RecieveFunc(response);
@@ -253,23 +225,27 @@
         });
       }
 
-		});
+    });
 
-    function RecieveFunc(data){
-        $("#cards").empty();
-        $("#details").empty();
-        if(data.length===0){
-            $("#cards").append('<div class="card text-center shadow rounded w-75 center"><div class="card-body"><h5 class="card-title">No results found!</h5></div></div>')
-        }
-        else{
-          $("#details").append('<h3 class="boxy">heres your schedule</h3>');
-          data.forEach(function(drug){
-            var name = drug[0];
-            var duration = drug[3];
-            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
-          });
-        };
-    };
+    // $("#but_upload").click(function(){
+
+    //         var fd = new FormData();
+    //         var files = $('#file')[0].files[0];
+    //         fd.append('file',files);
+
+    //         $.ajax({
+    //             url: '/image',
+    //             type: 'post',
+    //             data: fd,
+    //             contentType: false,
+    //             processData: false,
+    //             success: function(response){
+    //               console.log(response);
+    //               RecieveFunc(response);
+    //               console.log("OK!");
+    //             },
+    //         });
+    //     });
 
     function SymFunc(data){
         $("#cards").empty();
@@ -286,153 +262,113 @@
           $("#cards").append('<br/><button type="button" id="disease" class="btn btn-warning btn-lg">FIND</button>');
         };
     };
+    
+    function RecieveFunc(data){
+        $("#cards").empty();
+        $("#details").empty();
+        if(data.length===0){
+            $("#cards").append('<div class="card text-center shadow rounded w-75 center"><div class="card-body"><h5 class="card-title">No results found!</h5></div></div>')
+        }
+        else{
+          $("#details").append('<h3 class="boxy">heres your schedule</h3>');
+          data.forEach(function(drug){
+            var name = drug[0];
+            var duration = drug[3];
+            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
+          });
+        };
+    };
+
+</script>
+
+
+<script type="text/javascript">
+
+    
+
+		// $(document).ready(function(){
+		// 	if(!localStorage.getItem("key"))
+		// 	{
+		// 		introJs().start();
+		// 		localStorage.setItem("key", "keyValue");
+		// 	};
+		// });
+
+		// $("#sympAdd").click(function(){
+		//   symps.push($("#symptom").val());
+		//   $("#symptom").val("");
+		// });
+
+  //   function appendNewSymp(name){
+  //     symps.push(name);
+  //   }
+
+		// $("#sympFind").click(function(){
+		//   $.ajax({
+		//             url: '/disease',
+		//             type: 'post',
+		//             data: JSON.stringify({
+		//               'symptoms' : symps
+		//             }),
+		//             dataType: 'text',
+		//             contentType: "application/json",
+		//             success: function(response){
+		//               console.log(response);
+		//               symps = null;
+  //                 SymFunc(response);
+		//               console.log("DONE!");
+		//             },
+		//         });
+		// });
+
+    // $("#disease").click(function(){
+    //   $.ajax({
+    //             url: '/find',
+    //             type: 'post',
+    //             data: JSON.stringify({
+    //               'symptoms' : symps
+    //             }),
+    //             dataType: 'text',
+    //             contentType: "application/json",
+    //             success: function(response){
+    //               console.log(response);
+    //               symps = null;
+    //              // SymFunc(response);
+    //               console.log("found!");
+    //             },
+    //         });
+    // }
+
+		
+
+    // function RecieveFunc(data){
+    //     $("#cards").empty();
+    //     $("#details").empty();
+    //     if(data.length===0){
+    //         $("#cards").append('<div class="card text-center shadow rounded w-75 center"><div class="card-body"><h5 class="card-title">No results found!</h5></div></div>')
+    //     }
+    //     else{
+    //       $("#details").append('<h3 class="boxy">heres your schedule</h3>');
+    //       data.forEach(function(drug){
+    //         var name = drug[0];
+    //         var duration = drug[3];
+    //         $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
+    //       });
+    //     };
+    // };
+
+    
      
 
-    $('#go-to-top').each(function(){
-        $(this).click(function(){ 
-            $('html,body').animate({ scrollTop: 0 }, 'slow');
-            $('form')[0].reset()
-                return false; 
-            });
-    });
+    // $('#go-to-top').each(function(){
+    //     $(this).click(function(){ 
+    //         $('html,body').animate({ scrollTop: 0 }, 'slow');
+    //         $('form')[0].reset()
+    //             return false; 
+    //         });
+    // });
 
-    </script>
-
-
-<!-------------------------------------------- GOOGLE CALS -------------------------------------------------------->
-
-
- <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" style="display: none;">Authorize</button>
-    <button id="signout_button" style="display: none;">Sign Out</button>
-
-    <pre id="content" style="white-space: pre-wrap;"></pre>
-
-    <script type="text/javascript">
-      // Client ID and API key from the Developer Console
-      var CLIENT_ID = '686668170446-90dc678t33eiobahgan5qte8aod8nq1a.apps.googleusercontent.com';
-      var API_KEY = 'AIzaSyBs9ZaCKkEMP7AdJWzDylVKFw_zJ7UzPHE';
-
-      // Array of API discovery doc URLs for APIs used by the quickstart
-      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-      // secret = "w3cMypYJyHP9rWz3aGVf19MK"
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
-      var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-
-      var authorizeButton = document.getElementById('authorize_button');
-      var signoutButton = document.getElementById('signout_button');
-
-      /**
-       *  On load, called to load the auth2 library and API client library.
-       */
-      function handleClientLoad() {
-        gapi.load('client:auth2', initClient);
-      }
-
-      /**
-       *  Initializes the API client library and sets up sign-in state
-       *  listeners.
-       */
-      function initClient() {
-        gapi.client.init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: DISCOVERY_DOCS,
-          scope: SCOPES
-        }).then(function () {
-          // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-          // Handle the initial sign-in state.
-          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-          authorizeButton.onclick = handleAuthClick;
-          signoutButton.onclick = handleSignoutClick;
-        }, function(error) {
-          appendPre(JSON.stringify(error, null, 2));
-        });
-      }
-
-      /**
-       *  Called when the signed in status changes, to update the UI
-       *  appropriately. After a sign-in, the API is called.
-       */
-      function updateSigninStatus(isSignedIn) {
-        if (isSignedIn) {
-          authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';
-          listUpcomingEvents();
-        } else {
-          authorizeButton.style.display = 'block';
-          signoutButton.style.display = 'none';
-        }
-      }
-
-      /**
-       *  Sign in the user upon button click.
-       */
-      function handleAuthClick(event) {
-        gapi.auth2.getAuthInstance().signIn();
-      }
-
-      /**
-       *  Sign out the user upon button click.
-       */
-      function handleSignoutClick(event) {
-        gapi.auth2.getAuthInstance().signOut();
-      }
-
-      /**
-       * Append a pre element to the body containing the given message
-       * as its text node. Used to display the results of the API call.
-       *
-       * @param {string} message Text to be placed in pre element.
-       */
-      function appendPre(message) {
-        var pre = document.getElementById('content');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
-      }
-
-      /**
-       * Print the summary and start datetime/date of the next ten events in
-       * the authorized user's calendar. If no events are found an
-       * appropriate message is printed.
-       */
-      function listUpcomingEvents() {
-        gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'timeMin': (new Date()).toISOString(),
-          'showDeleted': false,
-          'singleEvents': true,
-          'maxResults': 10,
-          'orderBy': 'startTime'
-        }).then(function(response) {
-          var events = response.result.items;
-          appendPre('Upcoming events:');
-
-          if (events.length > 0) {
-            for (i = 0; i < events.length; i++) {
-              var event = events[i];
-              var when = event.start.dateTime;
-              if (!when) {
-                when = event.start.date;
-              }
-              appendPre(event.summary + ' (' + when + ')')
-            }
-          } else {
-              appendPre('No upcoming events found.');
-          }
-        });
-      }
-
-    </script>
-
-    <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script>
-
+</script>
 </body>
 
 </html>

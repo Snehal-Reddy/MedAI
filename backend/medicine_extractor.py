@@ -62,13 +62,13 @@ def getOCRTextResult( operationLocation, headers ):
     return result
 
 def showResultinFile(result):
-	lines = result['recognitionResult']['lines']
-	for i in range(len(lines)):
-		words = lines[i]['words']
-		s = ""
-		for word in words:
-			s += word['text'] + " "
-		print(s)
+    lines = result['recognitionResult']['lines']
+    for i in range(len(lines)):
+        words = lines[i]['words']
+        s = ""
+        for word in words:
+            s += word['text'] + " "
+        print(s)
 
 def showResultOnImage( result, img ):
     img = img[:, :, (2, 1, 0)]
@@ -141,15 +141,15 @@ def text_from_image(img):
 
 
 def drug_extraction(img):
-	model = Model.load_external('medacy_model_clinical_notes')
-	all_text_as_list = text_from_image(img)
-	all_text = ""
-	for line in all_text_as_list:
-		all_text += line + " "
-	print(all_text)
-	annotation = model.predict(all_text)
-	print(annotation)
-	return annotation
+    model = Model.load_external('medacy_model_clinical_notes')
+    all_text_as_list = text_from_image(img)
+    all_text = ""
+    for line in all_text_as_list:
+        all_text += line + " "
+    print(all_text)
+    annotation = model.predict(all_text)
+    print(annotation)
+    return annotation
 
 if __name__ == "__main__":
-	drug_extraction(img)
+    drug_extraction(img)

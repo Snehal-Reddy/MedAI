@@ -25,7 +25,7 @@ def search():
 	return solver(data)
 
 @app.route('/find', methods = ['POST'])
-def search():
+def super():
 	data = request.get_json()['symptoms']
 	print(data)
 	#return "hellll OOOOOO"

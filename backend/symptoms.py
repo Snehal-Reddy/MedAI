@@ -65,7 +65,7 @@ def pred_dis(symptomlist,buckets):
 		symptom_new.append(symptom)
 	return symptom_new,top_3,symptomlist,disease_bucket
 
-def react_out(out,top_3,symptomlist,disease_bucket)
+def react_out(out,top_3,symptomlist,disease_bucket):
 	# out = react_inp(symptom_new)
 	# out = "YYY"
 	i = 0
