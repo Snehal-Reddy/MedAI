@@ -13,10 +13,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js" type="text/javascript"></script>
 
 <style>
-    body {}
+    body
     {
         margin: auto;
-        background-image: url(wallpaper.jpg);
+        background-image: url('wall5.jpg');
+        background-repeat: repeat;
+        background-size: 1920px 1080px;
     }
     .center 
     {
@@ -290,10 +292,11 @@
         else{
           $("#details").append('<h3 class="boxy">heres your schedule</h3>');
           for (var key in data){
-            var name = data[key][0];
-            var duration = data[key][3];
-            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
+            //var name = data[key][3];
+            //var duration = data[][3];
+            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take Asprin for 7 days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
           };
+          $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'"><div class="card-body"><p class="card-title">Your symptoms</p><h5 class="card-text" id="positive"></h5></div><button type="button" onclick=sendSymp(); class="btn btn-warning btn-lg">SEARCH</button></div>');
         };
     };
 
