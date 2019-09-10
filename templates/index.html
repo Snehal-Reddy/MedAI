@@ -96,6 +96,7 @@
       symps.push($("#symp").val());
       $("#symp").val("");
     }
+
     function searchSymp(){
       $.ajax({
                 url: '/disease',
@@ -112,27 +113,24 @@
                 },
             });
     }
-    
-    $(document).ready(function(){
 
-        $("#but_upload").click(function(){
+    $("#img_upload").click(function(){
 
-            var fd = new FormData();
-            var files = $('#file')[0].files[0];
-            fd.append('file',files);
+        var fd = new FormData();
+        var files = $('#file')[0].files[0];
+        fd.append('file',files);
 
-            $.ajax({
-                url: '/image',
-                type: 'post',
-                data: fd,
-                contentType: false,
-                processData: false,
-                success: function(response){
-                  console.log(response);
+        $.ajax({
+            url: '/image',
+            type: 'post',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(response){
+              console.log(response);
 
-                  console.log("OK!");
-                },
-            });
+              console.log("OK!");
+            },
         });
     });
   </script>
