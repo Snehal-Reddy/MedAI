@@ -49,6 +49,7 @@ def pred_dis(symptomlist,buckets):
 	score = []
 	score_1 = []
 	symps = {}
+	symptom_new = []	
 	for illness in top_3:
 		symptomlist_new = symptomlist.copy()
 		dif = (set(disease_bucket[illness[0]])).difference(set(symptomlist))

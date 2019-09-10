@@ -4,6 +4,8 @@ from backend.medicine_extractor import *
 from backend.symptoms import *
 import json
 
+b,c,d = None, None, None
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -19,17 +21,18 @@ def solve():
 
 @app.route('/disease', methods = ['POST'])
 def search():
+	global b, c, d
 	data = request.get_json()['symptoms']
-	print(data)
-	#return "hellll OOOOOO"
-	return solver(data)
+	a,b,c,d = solver(data)
+	return jsonify(a)
+	# return solver(data)
 
 @app.route('/find', methods = ['POST'])
 def super():
 	data = request.get_json()['symptoms']
 	print(data)
 	#return "hellll OOOOOO"
-	return react_out(data)
+	return react_out(data, b, c, d)
 
 if __name__ == '__main__':
    app.run(debug = True, port=3000)
