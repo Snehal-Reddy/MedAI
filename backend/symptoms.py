@@ -74,9 +74,9 @@ def react_out(out,top_3,symptomlist,disease_bucket):
 	for illness in top_3:
 
 		symptomlist_new = symptomlist.copy()
-		if(symptom not in symps.keys()):
-			symptom_new.append(symptom)
-
+		# if(symptom not in symps.keys()):
+			# symptom_new.append(symptom)
+		for i in range(len(out))
 			x = out[i]
 			i+=1
 			if(x == 'Y'):
@@ -84,9 +84,9 @@ def react_out(out,top_3,symptomlist,disease_bucket):
 				symps[symptom] = 1
 			else:
 				symps[symptom] = 0
-		else:
-			if(symps[symptom]==1):
-				symptomlist_new.append(symptom)
+		# else:
+		# 	if(symps[symptom]==1):
+		# 		symptomlist_new.append(symptom)
 				
 		inters = (set(symptomlist_new) & set(disease_bucket[illness[0]]))
 		score.append( float(len(inters))/float(len(symptomlist_new))*100)
