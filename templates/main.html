@@ -160,14 +160,22 @@
     <br/>
 
     <div id="cards">
-      
-<!--       <div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy">
-        <div class="card-body">
-          <h5 class="card-title">Do you have/feel </h5>
-          <p class="card-text">Symptom ?</p>
-          <a href="#" class="btn btn-warning"> YES </a>
+<!--         <div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'">
+            <div class="card-body">
+                <p class="card-title">Do you have/feel ?</p>
+                        <h5 class="card-text">'+name+'</h5>
+                        <a  class="btn btn-success" onclick="appendNewSymp("'+name+'");"> YES </a>
+                        <a  class="btn btn-danger" onclick="appendNewSymp(null);"> NO </a>
+            </div>
         </div>
-      </div> -->
+
+        <div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'">
+            <div class="card-body">
+                <p class="card-title">Your symptoms</p>
+                        <h5 class="card-text" id="positive"></h5>
+            </div>
+            <button type="button" id="disease" class="btn btn-warning btn-lg">SEARCH</button>
+        </div> -->
 
     </div>
 
@@ -177,7 +185,13 @@
     var symps = [];
 
     function appendNewSymp(name){
-      symps.push(name);
+        console.log(name);
+      symps.push(name.replace("-"," "));
+      $("#positive").append(' ' + name + ' ');
+      $('#'+name).remove();
+    }
+    function deleteSymp(name){
+        $('#'+name).remove();
     }
     function appendSymp(){
       symps.push($("#symptom").val());
@@ -191,16 +205,34 @@
                 data: JSON.stringify({
                   'symptoms' : symps
                 }),
-                dataType: 'text',
+                dataType: 'JSON',
                 contentType: "application/json",
                 success: function(response){
                   console.log(response);
-                  symps = null;
+                  symps = [];
                   SymFunc(response);
-                  console.log("DONE!");
+                  console.log("DONE!");'+name+'
                 },
             });
     });
+
+    function sendSymp(){
+      $.ajax({
+                url: '/find',
+                type: 'post',
+                data: JSON.stringify({
+                  'symptoms' : symps
+                }),
+                dataType: 'JSON',
+                contentType: "application/json",
+                success: function(response){
+                  console.log(response);
+                  symps = [];
+                  SymFunc(response);
+                  console.log("DONE!");'+name+'
+                },
+            });
+    };
 
     $("#but_upload").click(function(){
 
@@ -236,10 +268,10 @@
         else{
           $("#details").append('<h3 class="boxy">Please answer the following questions.</h3>');
           data.forEach(function(name){
-            var name = name;
-            $("#cards").append(' <div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Do you have/feel </h5> <p class="card-text">'+name+'?</p> <a href="#" class="btn btn-warning" onclick=appendNewSymp("'+name+'");> YES </a> </div> </div>');
+            var name = name.replace(/\s/g,'-');;
+            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'"><div class="card-body"><p class="card-title">Do you have/feel ?</p><h5 class="card-text">'+name+'</h5><a  class="btn btn-success mr-sm-1" onclick=appendNewSymp("'+name+'");> YES </a><a  class="btn btn-danger mr-sm-1   " onclick=deleteSymp("'+name+'");> NO </a></div></div>');
           })
-          $("#cards").append('<br/><button type="button" id="disease" class="btn btn-warning btn-lg">FIND</button>');
+          $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'"><div class="card-body"><p class="card-title">Your symptoms</p><h5 class="card-text" id="positive"></h5></div><button type="button" onclick=sendSymp(); class="btn btn-warning btn-lg">SEARCH</button></div>');
         };
     };
     
@@ -251,11 +283,11 @@
         }
         else{
           $("#details").append('<h3 class="boxy">heres your schedule</h3>');
-          data.forEach(function(drug){
-            var name = drug[0];
-            var duration = drug[3];
+          for (var key in data){
+            var name = data[key];
+            var duration = data[key];
             $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
-          });
+          };
         };
     };
 
