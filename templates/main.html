@@ -14,10 +14,10 @@
 
 <style>
     body {}
-/*    {
+    {
         margin: auto;
-        background-image: url(wallpaper1.png);
-    }*/
+        background-image: url(wallpaper.jpg);
+    }
     .center 
     {
         margin: 10px auto;
@@ -223,13 +223,13 @@
                 data: JSON.stringify({
                   'symptoms' : symps
                 }),
-                dataType: 'JSON',
+                dataType: 'text',
                 contentType: "application/json",
                 success: function(response){
                   console.log(response);
                   symps = [];
-                  SymFunc(response);
-                  console.log("DONE!");'+name+'
+                  showDis(response);
+                  console.log("DONE!");
                 },
             });
     };
@@ -274,6 +274,12 @@
           $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'"><div class="card-body"><p class="card-title">Your symptoms</p><h5 class="card-text" id="positive"></h5></div><button type="button" onclick=sendSymp(); class="btn btn-warning btn-lg">SEARCH</button></div>');
         };
     };
+
+    function showDis(data){
+        $("#cards").empty();
+        $("#details").empty();
+        $("#details").append('<h3 class="boxy">Its most probably '+ data +' . Youre dead meat now boi !</h3>');
+    }
     
     function RecieveFunc(data){
         $("#cards").empty();
@@ -284,8 +290,8 @@
         else{
           $("#details").append('<h3 class="boxy">heres your schedule</h3>');
           for (var key in data){
-            var name = data[key];
-            var duration = data[key];
+            var name = data[key][0];
+            var duration = data[key][3];
             $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take ' +name+ ' for ' + duration +'days</p> <a href="#" class="btn btn-success">Done</a> </div> </div>');
           };
         };
