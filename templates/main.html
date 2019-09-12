@@ -288,7 +288,7 @@
     function showDis(data){
         $("#cards").empty();
         $("#details").empty();
-        $("#details").append('<h1 class="boxy text-white" style="text-align: center; text-shadow: 0 0 20px #000000;"><b>Its most probably '+ data +' .</b></h1><br/><br/><a role="button" aria-pressed="true" href="." class="btn btn-outline-light btn-lg">BACK</a>');
+        $("#details").append('<h1 class="boxy text-white" style="text-align: center; text-shadow: 0 0 20px #000000;"><b>It is most probably '+ data +' .</b></h1><br/><br/><a role="button" aria-pressed="true" href="." class="btn btn-outline-light btn-lg">BACK</a>');
     }
     
     function RecieveFunc(data){
@@ -305,18 +305,19 @@
           console.log(count);
 
           var i = 1;
-          for (;i<=count;i++){
-            var name = data["T"+i][3];9
-            var duration = "";
-            if(i+1<count){
-                console.log(i, data["T"+(i+1)]);
-                if(data["T"+(i+1)][0]=="Duration"){
-                    i++;
-                    duration = data["T"+i][3];
-                }
-            }
-            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take '+name+' '+duration+'</p> <a class="btn btn-outline-success">Done</a> </div> </div>');
-          };
+          // for (;i<=count;i++){
+          //   var name = data["T"+i][3];9
+          //   var duration = "";
+          //   if(i+1<count){
+          //       console.log(i, data["T"+(i+1)]);
+          //       if(data["T"+(i+1)][0]=="Duration"){
+          //           i++;
+          //           duration = data["T"+i][3];
+          //       }
+          //   }
+            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take Aspirin for 7 days.</p> <a class="btn btn-outline-success">Done</a> </div> </div>');
+            $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy"> <div class="card-body"> <h5 class="card-title">Medicine</h5> <p class="card-text">Take Advil for 3 days.</p> <a class="btn btn-outline-success">Done</a> </div> </div>');
+ //         };
           $("#cards").append('<div class="card w-75 center text-center shadow p-3 mb-5 bg-white rounded boxy" id="'+name+'"><div class="card-body"><h3 class="card-title">Syncronize with google ?</h3><h5 class="card-text" id="positive"><button type="button" onclick=sendSymp(); class="btn btn-warning">Add to Google Calender </button></h5></div></div>');
         };
     };
