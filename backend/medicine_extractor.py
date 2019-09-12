@@ -12,7 +12,7 @@ with open('drugs.json', 'r') as f:
 	drugs_dict = json.load(f)
 
 _url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/RecognizeText'
-_key = "ca1f6160084846acbcab166cd2719365"
+_key = "38923eb3e1e74daf9ba34045ad1d672d"
   #Here you have to paste your primary key
 _maxNumRetries = 10
 
