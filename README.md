@@ -3,7 +3,7 @@ Keep your cancer in check !!
 
 # Installation and Requirements to run the backend:
 
-1. Basic libraries such as numpy, matplotlib, cv2, requests, time.
+1. Basic libraries such as numpy, matplotlib, cv2, requests, time, flask.
 
 2. `pip install git+https://github.com/NLPatVCU/medaCy.git` and `pip install git+https://github.com/NLPatVCU/medaCy_model_clinical_notes.git` . This installs medaCy NER which is built upon Spacy.
 
