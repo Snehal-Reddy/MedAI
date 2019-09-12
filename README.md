@@ -1,5 +1,6 @@
-# Dr.RIP
-Keep your cancer in check !!
+# MEDAI
+
+An intelligent and responsible medical app.
 
 # Installation and Requirements to run the backend:
 
