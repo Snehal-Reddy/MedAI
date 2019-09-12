@@ -17,7 +17,7 @@ An intelligent and responsible medical app.
 # Results 
 
 ## Doctor Prescription Parser - 
-![alt_text](https://github.com/Snehal-Reddy/MedAI/blob/master/static/prescription.jpg)
+![alt_text](https://github.com/Snehal-Reddy/MedAI/blob/master/static/prescription.jpg = 300x600)
 
 ![alt_text](https://github.com/Snehal-Reddy/MedAI/blob/master/static/Screenshot%20from%202019-09-12%2022-52-18.png)
 
