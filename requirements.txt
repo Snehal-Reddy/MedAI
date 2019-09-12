@@ -21,8 +21,6 @@ jsonschema==3.0.2
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
 matplotlib==3.1.1
-medacy==0.1.1
-medacy-model-clinical-notes==1.0.1
 msgpack==0.5.6
 msgpack-numpy==0.4.3.2
 multiprocess==0.70.8
@@ -60,3 +58,5 @@ wasabi==0.2.2
 Werkzeug==0.15.6
 xmltodict==0.12.0
 gunicorn==19.9.0
+git+https://github.com/NLPatVCU/medaCy.git
+git+https://github.com/NLPatVCU/medaCy_model_clinical_notes.git
