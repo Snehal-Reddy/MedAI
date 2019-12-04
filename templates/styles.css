@@ -1,0 +1,42 @@
+  body
+    {
+        margin: auto;
+        background: url('static/wall2.jpg') repeat fixed;
+        overflow: scroll;
+        background-size: 1920px 1080px;
+    }
+    .center 
+    {
+        margin: 10px auto;
+        padding: 20px;
+        width: 50%;
+    }
+    .right
+    {
+        align-content: right;
+        right: auto;
+    }
+    .m-fadeOut {
+      visibility: hidden;
+      display: none;
+      opacity: 0;
+      transition: visibility 0s linear 300ms, opacity 300ms;
+    }
+    .m-fadeIn {
+      visibility: visible;
+      opacity: 1;
+      transition: visibility 0s linear 0s, opacity 300ms;
+    }
+    .boxy {
+    animation: slide-up 1s ease;
+    }
+    @keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
