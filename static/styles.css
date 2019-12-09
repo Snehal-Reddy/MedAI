@@ -1,7 +1,7 @@
   body
     {
         margin: auto;
-        background: url('static/wall2.jpg') repeat fixed;
+        background: url('wall2.jpg') repeat fixed;
         overflow: scroll;
         background-size: 1920px 1080px;
     }
