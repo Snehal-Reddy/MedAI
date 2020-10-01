@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, jsonify
 from backend.medicine_extractor import *
 from backend.symptoms import *
 import json
+import math
 
 b,c,d = None, None, None
 
