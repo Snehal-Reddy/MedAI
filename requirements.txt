@@ -29,7 +29,7 @@ multiprocess==0.70.8
 murmurhash==1.0.2
 nmslib==1.8.1
 numpy==1.16.1
-opencv-python==4.1.1.26
+opencv-python==4.2.0.32
 pathos==0.2.4
 plac==0.9.6
 pox==0.2.6
