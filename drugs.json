@@ -1,6 +1,7 @@
 {
   "description": "A list of pharmaceutical drug names",
   "source": "The United States National Library of Medicine, http://druginfo.nlm.nih.gov/drugportal/",
+  
   "drugs": [
     "Abacavir Sulfate",
     "Abatacept",
