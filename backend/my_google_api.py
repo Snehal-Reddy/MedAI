@@ -6,8 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D 
 
-_url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/RecognizeText'
-_key = "b4f1b6fcb14e447e82dc2aad77d25f76"
+_url = 'https://console.cloud.google.com/apis/credentials/oauthclient/498165120842-adem9fcdek3h057uofo4c38damp28d06.apps.googleusercontent.com?project=yashdada'
+_key = "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"
   #Here you have to paste your primary key
 _maxNumRetries = 10
 

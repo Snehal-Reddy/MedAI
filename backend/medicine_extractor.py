@@ -11,8 +11,8 @@ import json
 with open('drugs.json', 'r') as f:
 	drugs_dict = json.load(f)
 
-_url = 'https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/RecognizeText'
-_key = "38923eb3e1e74daf9ba34045ad1d672d"
+_url = 'https://console.cloud.google.com/apis/credentials/oauthclient/498165120842-adem9fcdek3h057uofo4c38damp28d06.apps.googleusercontent.com?project=yashdada'
+_key = "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"
   #Here you have to paste your primary key
 _maxNumRetries = 10
 
